@@ -1,0 +1,24 @@
+filter:
+    excluded_paths:
+        - vendor/*
+        - Tests/*
+
+checks:
+    php:
+        code_rating: true
+        duplication: true
+
+build:
+    dependencies:
+        before:
+            - chmod +x bin/install_rdkafka.sh
+            -
+                command: bin/install_rdkafka.sh
+                environment:
+                    LIBRDKAFKA_VERSION: v1.1.0
+    tests:
+        override:
+            -   command: ./vendor/bin/phpunit --coverage-clover ./clover.xml
+                coverage:
+                    file: clover.xml
+                    format: clover
