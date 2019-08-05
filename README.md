@@ -25,8 +25,8 @@ composer req symfony-bundles/kafka-bundle
 [testing-image]: https://travis-ci.org/symfony-bundles/kafka-bundle.svg?branch=master
 [stable-image]: https://poser.pugx.org/symfony-bundles/kafka-bundle/v/stable
 [downloads-image]: https://poser.pugx.org/symfony-bundles/kafka-bundle/downloads
-[sensiolabs-insight-link]: https://insight.sensiolabs.com/projects/8c275b49-61e5-437c-8b34-30484cf090c0
-[sensiolabs-insight-image]: https://insight.sensiolabs.com/projects/8c275b49-61e5-437c-8b34-30484cf090c0/big.png
+[sensiolabs-insight-link]: https://insight.sensiolabs.com/projects/e01f6565-d3b3-4442-9638-58e04c18c2cb
+[sensiolabs-insight-image]: https://insight.sensiolabs.com/projects/e01f6565-d3b3-4442-9638-58e04c18c2cb/big.png
 [code-coverage-link]: https://scrutinizer-ci.com/g/symfony-bundles/kafka-bundle/?branch=master
 [code-coverage-image]: https://scrutinizer-ci.com/g/symfony-bundles/kafka-bundle/badges/coverage.png?b=master
 [scrutinizer-code-quality-link]: https://scrutinizer-ci.com/g/symfony-bundles/kafka-bundle/?branch=master

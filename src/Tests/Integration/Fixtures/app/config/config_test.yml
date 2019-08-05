@@ -1,0 +1,12 @@
+framework:
+    test: ~
+    secret: test
+    session:
+        enabled: false
+
+services:
+    SymfonyBundles\KafkaBundle\Tests\Integration\Fixtures\Consumer\:
+        resource: '../../Consumer/*'
+        tags: ['console.command']
+        public: true
+        autowire: true

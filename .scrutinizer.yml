@@ -1,7 +1,7 @@
 filter:
     excluded_paths:
         - vendor/*
-        - Tests/*
+        - src/Tests/*
 
 checks:
     php:
@@ -9,16 +9,28 @@ checks:
         duplication: true
 
 build:
+    environment:
+        mysql: false
+        postgresql: false
+        redis: false
+        elasticsearch: false
+        rabbitmq: false
+        mongodb: false
+        neo4j: false
+        memcached: false
+        docker: true
     dependencies:
-        before:
-            - chmod +x bin/install_rdkafka.sh
-            -
-                command: bin/install_rdkafka.sh
-                environment:
-                    LIBRDKAFKA_VERSION: v1.1.0
-    tests:
         override:
-            -   command: ./vendor/bin/phpunit --coverage-clover ./clover.xml
-                coverage:
-                    file: clover.xml
-                    format: clover
+            - ls -la
+        before:
+            - docker-compose up -d --remove-orphans --build
+            - docker-compose exec -T php /usr/local/bin/php /usr/local/bin/composer install --no-suggest
+            - docker-compose exec -T php /usr/local/bin/php /app/vendor/bin/phpunit --coverage-clover=./clover.xml
+    nodes:
+        analysis:
+            tests:
+                override:
+                    -   command: ls -la
+                        coverage:
+                            file: clover.xml
+                            format: clover

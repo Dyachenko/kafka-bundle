@@ -1,25 +1,21 @@
 language: php
-sudo: false
-
-php:
-    - 7.3
-
-env:
-    - SYMFONY_VERSION=4.0
-    - SYMFONY_VERSION=4.*
-    - SYMFONY_VERSION=4.* DEPENDENCIES=dev
 
 services:
-    - rdkafka
+    - docker
 
-cache:
-    directories:
-        - $HOME/.composer/cache
+env:
+    - DOCKER_COMPOSE_VERSION=1.23.2 SYMFONY_VERSION=4.3
+    - DOCKER_COMPOSE_VERSION=1.23.2 SYMFONY_VERSION=4.*
+    - DOCKER_COMPOSE_VERSION=1.23.2 SYMFONY_VERSION=4.* DEPENDENCIES=dev
 
-install:
-    - composer self-update
-    - pecl install -f mongodb
-    - composer install
+before_install:
+    - sudo rm /usr/local/bin/docker-compose
+    - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+    - chmod +x docker-compose
+    - sudo mv docker-compose /usr/local/bin
+    - docker-compose up -d --remove-orphans --build
+    - docker-compose exec -T php sh -c "echo 'precedence ::ffff:0:0/96 100' >> /etc/gai.conf"
+    - docker-compose exec -T php /usr/local/bin/php /usr/local/bin/composer install --no-suggest
 
 script:
-    - ./vendor/bin/phpunit
+    - docker-compose exec -T php /usr/local/bin/php /app/vendor/bin/phpunit

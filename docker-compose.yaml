@@ -1,0 +1,33 @@
+version: '3.2'
+
+services:
+    php:
+        build: docker/php
+        volumes:
+            - ./:/app
+        links:
+            - kafka.intra
+        depends_on:
+            - kafka.intra
+
+    zookeeper.intra:
+        image: wurstmeister/zookeeper
+        restart: always
+        ports:
+            - 2181:2181
+
+    kafka.intra:
+        image: wurstmeister/kafka
+        restart: always
+        ports:
+            - 7203:7203
+            - 9092:9092
+        depends_on:
+            - zookeeper.intra
+        environment:
+            JMX_PORT: 7203
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper.intra:2181
+            KAFKA_ADVERTISED_HOST_NAME: kafka.intra
+            KAFKA_CREATE_TOPICS_SEPARATOR: ' '
+            KAFKA_CREATE_TOPICS:
+                test_demo:2:1
