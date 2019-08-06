@@ -10,14 +10,7 @@ checks:
 
 build:
     environment:
-        mysql: false
-        postgresql: false
         redis: false
-        elasticsearch: false
-        rabbitmq: false
-        mongodb: false
-        neo4j: false
-        memcached: false
         docker: true
     dependencies:
         override:
