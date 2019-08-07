@@ -17,14 +17,70 @@ How to use
 composer req symfony-bundles/kafka-bundle
 ```
 
-* Create consumer
+* Create consumer. Example (src/Consumer/EmailSendConsumer.php):
 ```php
+<?php
 
+namespace App\Consumer;
+
+use Swift_Mailer;
+use SymfonyBundles\KafkaBundle\Command\Consumer;
+
+class EmailSendConsumer extends Consumer
+{
+    public const QUEUE_NAME = 'email_send_queue';
+
+    /**
+     * @var Swift_Mailer
+     */
+    private $mailer;
+
+    /**
+     * @required
+     *
+     * @param Swift_Mailer $mailer
+     */
+    public function setMailer(Swift_Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function onMessage(array $data): void
+    {
+        $message = (new \Swift_Message($data['subject']))
+            ->setFrom($data['sender'])
+            ->setTo($data['recipient'])
+            ->setBody($data['body']);
+
+        $this->mailer->send($message);
+    }
+}
 ```
 
-* Publish messages
+* Produce message. Example (src/Service/EmailService.php):
 ```php
+<?php
 
+namespace App\Service;
+
+use App\Consumer\EmailSendConsumer;
+use SymfonyBundles\KafkaBundle\DependencyInjection\Traits\ProducerTrait;
+
+class EmailService
+{
+    use ProducerTrait;
+
+    /**
+     * @param array $data
+     */
+    public function send(array $data): void
+    {
+        $this->producer->send(EmailSendConsumer::QUEUE_NAME, $data);
+    }
+}
 ```
 
 Default configuration
