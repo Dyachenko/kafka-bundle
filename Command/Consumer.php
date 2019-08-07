@@ -2,6 +2,8 @@
 
 namespace SymfonyBundles\KafkaBundle\Command;
 
+use Exception;
+use JsonException;
 use RdKafka\Message;
 use Symfony\Component\Console;
 use SymfonyBundles\KafkaBundle\DependencyInjection\Traits\{ConsumerTrait, LoggerTrait};
@@ -57,8 +59,8 @@ abstract class Consumer extends Console\Command\Command
             case \RD_KAFKA_RESP_ERR_NO_ERROR:
                 try {
                     $this->onMessage($this->getPayload($message));
-                } catch (\Exception $exception) {
-                    $this->logger->error($exception->getMessage(), ['payload' => $message->payload]);
+                } catch (Exception $exception) {
+                    $this->onException($message, $exception);
                 }
                 break;
             case \RD_KAFKA_RESP_ERR__PARTITION_EOF:
@@ -77,6 +79,15 @@ abstract class Consumer extends Console\Command\Command
      * @param array $data
      */
     abstract protected function onMessage(array $data): void;
+
+    /**
+     * @param Message   $message
+     * @param Exception $exception
+     */
+    protected function onException(Message $message, Exception $exception): void
+    {
+        $this->logger->error($exception->getMessage(), ['payload' => $message->payload]);
+    }
 
     /**
      * @param Message $message
@@ -107,7 +118,7 @@ abstract class Consumer extends Console\Command\Command
      *
      * @return array
      *
-     * @throws \Exception|\JsonException
+     * @throws Exception|JsonException
      */
     protected function getPayload(Message $message): array
     {

@@ -83,6 +83,11 @@ class EmailService
 }
 ```
 
+* Run consumer. Example:
+```bash
+php bin/console app:consumer:email-send
+```
+
 Default configuration
 ---------------------
 ``` yml
