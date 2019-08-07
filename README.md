@@ -10,13 +10,47 @@ Symfony Kafka Bundle
 [![Latest Stable Version][stable-image]][package-link]
 [![License][license-image]][license-link]
 
-Installation
-------------
-* Require the bundle with composer:
-
-``` bash
+How to use
+----------
+* Install package
+```bash
 composer req symfony-bundles/kafka-bundle
 ```
+
+* Create consumer
+```php
+
+```
+
+* Publish messages
+```php
+
+```
+
+Default configuration
+---------------------
+``` yml
+# config/packages/sb_kafka.yaml
+sb_kafka:
+    producers:
+        configuration:
+            group.id: 'main_group'
+            log.connection.close: 'false'
+            metadata.broker.list: '%env(KAFKA_BROKERS)%'
+            queue.buffering.max.messages: 10000000
+
+    consumers:
+        configuration:
+            group.id: 'main_group'
+            log.connection.close: 'false'
+            metadata.broker.list: '%env(KAFKA_BROKERS)%'
+
+    topics:
+        configuration:
+            auto.offset.reset: smallest
+```
+
+Read more about supported configuration properties: [librdkafka configuration][librdkafka-configuration-link].
 
 [package-link]: https://packagist.org/packages/symfony-bundles/kafka-bundle
 [license-link]: https://github.com/symfony-bundles/kafka-bundle/blob/master/LICENSE
@@ -31,3 +65,4 @@ composer req symfony-bundles/kafka-bundle
 [code-coverage-image]: https://scrutinizer-ci.com/g/symfony-bundles/kafka-bundle/badges/coverage.png?b=master
 [scrutinizer-code-quality-link]: https://scrutinizer-ci.com/g/symfony-bundles/kafka-bundle/?branch=master
 [scrutinizer-code-quality-image]: https://scrutinizer-ci.com/g/symfony-bundles/kafka-bundle/badges/quality-score.png?b=master
+[librdkafka-configuration-link]: https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md

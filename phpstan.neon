@@ -1,6 +1,5 @@
 parameters:
-    ignoreErrors:
-        - '#\\NodeDefinition::children#'
-
     excludes_analyse:
-        - 'src/Tests'
+        - 'DependencyInjection/Configuration.php'
+        - 'Tests'
+        - 'vendor'

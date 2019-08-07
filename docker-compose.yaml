@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
     php:
-        build: docker/php
+        build: .
         volumes:
             - ./:/app
         links:
