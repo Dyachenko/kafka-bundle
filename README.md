@@ -66,7 +66,7 @@ class EmailSendConsumer extends Consumer
 
 namespace App\Service;
 
-use App\Consumer\EmailSendConsumer;
+use App\Consumer\DemoConsumer;
 use SymfonyBundles\KafkaBundle\DependencyInjection\Traits\ProducerTrait;
 
 class EmailService
@@ -78,7 +78,7 @@ class EmailService
      */
     public function send(array $data): void
     {
-        $this->producer->send(EmailSendConsumer::QUEUE_NAME, $data);
+        $this->producer->send(DemoConsumer::QUEUE_NAME, $data);
     }
 }
 ```

@@ -43,6 +43,8 @@ abstract class Consumer extends Console\Command\Command
      */
     final public function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
+        $this->onInitialize();
+
         $this->consumer->subscribe([static::QUEUE_NAME]);
 
         while ($message = $this->consumer->consume($input->getOption('timeout'))) {
@@ -73,6 +75,13 @@ abstract class Consumer extends Console\Command\Command
                 $this->onError($message);
                 break;
         }
+    }
+
+    /**
+     * Consumer initializing method.
+     */
+    protected function onInitialize(): void
+    {
     }
 
     /**
