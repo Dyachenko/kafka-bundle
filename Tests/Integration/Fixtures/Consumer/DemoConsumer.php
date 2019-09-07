@@ -22,8 +22,8 @@ class DemoConsumer extends Consumer
 
     protected function handle(Message $message): void
     {
-        if (strpos($message->payload, static::STOP_MESSAGE)) {
-            throw new \Exception(static::STOP_MESSAGE);
+        if (\strpos($message->payload, static::STOP_MESSAGE)) {
+            $this->onStop();
         }
 
         parent::handle($message);

@@ -64,9 +64,7 @@ class KafkaExtension extends ConfigurableExtension
      */
     private function addServiceDefinition(string $className, string $configClassName, ContainerBuilder $container): void
     {
-        $arguments = [new Reference($configClassName), new Reference(Topic\Configuration::class)];
-
-        $definition = new Definition($className, $arguments);
+        $definition = new Definition($className, [new Reference($configClassName)]);
         $definition->setPublic(true);
         $definition->setAutowired(true);
         $definition->setAutoconfigured(true);

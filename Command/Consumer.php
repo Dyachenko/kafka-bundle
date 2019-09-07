@@ -1,5 +1,7 @@
 <?php
 
+declare(ticks=1);
+
 namespace SymfonyBundles\KafkaBundle\Command;
 
 use Exception;
@@ -16,6 +18,11 @@ abstract class Consumer extends Console\Command\Command
      * @var string
      */
     public const QUEUE_NAME = 'topic_name';
+
+    /**
+     * @var bool
+     */
+    private $isRunning = true;
 
     /**
      * {@inheritdoc}
@@ -43,11 +50,13 @@ abstract class Consumer extends Console\Command\Command
      */
     final public function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
+        \pcntl_signal(\SIGTERM, [$this, 'onStop']);
+
         $this->onInitialize();
 
         $this->consumer->subscribe([static::QUEUE_NAME]);
 
-        while ($message = $this->consumer->consume($input->getOption('timeout'))) {
+        while ($this->isRunning && $message = $this->consumer->consume($input->getOption('timeout'))) {
             $this->handle($message);
         }
     }
@@ -120,6 +129,16 @@ abstract class Consumer extends Console\Command\Command
     protected function onError(Message $message): void
     {
         $this->logger->error($message->errstr(), ['code' => $message->err, 'payload' => $message->payload]);
+    }
+
+    /**
+     * Consumer stopping handler.
+     */
+    protected function onStop(): void
+    {
+        $this->isRunning = false;
+
+        $this->logger->debug('SIGTERM');
     }
 
     /**

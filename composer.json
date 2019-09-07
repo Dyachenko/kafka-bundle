@@ -21,6 +21,7 @@
     },
     "require": {
         "php": "^7.3",
+        "ext-pcntl": "*",
         "ext-rdkafka": "*",
         "symfony/framework-bundle": "^4.3",
         "symfony/yaml": "^4.3"
