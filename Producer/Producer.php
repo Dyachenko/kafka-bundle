@@ -2,19 +2,55 @@
 
 namespace SymfonyBundles\KafkaBundle\Producer;
 
-class Producer extends \RdKafka\Producer
+class Producer
 {
+    /**
+     * @var \RdKafka\Producer
+     */
+    protected $client;
+
     /**
      * @var array|\RdKafka\ProducerTopic[]
      */
     protected $topics = [];
 
     /**
+     * @var Configuration
+     */
+    protected $configuration;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(Configuration $configuration)
     {
-        parent::__construct($configuration);
+        $this->configuration = $configuration;
+    }
+
+    /**
+     * @return \RdKafka\Producer
+     */
+    public function getClient(): \RdKafka\Producer
+    {
+        if (null === $this->client) {
+            $this->client = new \RdKafka\Producer($this->configuration);
+        }
+
+        return $this->client;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return \RdKafka\ProducerTopic
+     */
+    public function getTopic(string $name): \RdKafka\ProducerTopic
+    {
+        if (false === isset($this->topics[$name])) {
+            $this->topics[$name] = $this->getClient()->newTopic($name);
+        }
+
+        return $this->topics[$name];
     }
 
     /**
@@ -23,10 +59,6 @@ class Producer extends \RdKafka\Producer
      */
     public function send(string $name, array $data): void
     {
-        if (false === isset($this->topics[$name])) {
-            $this->topics[$name] = $this->newTopic($name);
-        }
-
-        $this->topics[$name]->produce(\RD_KAFKA_PARTITION_UA, 0, \json_encode($data));
+        $this->getTopic($name)->produce(\RD_KAFKA_PARTITION_UA, 0, \json_encode($data));
     }
 }
