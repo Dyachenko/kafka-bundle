@@ -56,9 +56,12 @@ class Producer
     /**
      * @param string $name
      * @param array  $data
+     * @param int    $timeout
      */
-    public function send(string $name, array $data): void
+    public function send(string $name, array $data, int $timeout = 10000): void
     {
         $this->getTopic($name)->produce(\RD_KAFKA_PARTITION_UA, 0, \json_encode($data));
+
+        $this->getClient()->flush($timeout);
     }
 }

@@ -2,8 +2,17 @@
 
 namespace SymfonyBundles\KafkaBundle\Consumer;
 
-use SymfonyBundles\KafkaBundle\Topic\ServiceConfiguration;
-
-class Configuration extends ServiceConfiguration
+class Configuration extends \RdKafka\Conf
 {
+    /**
+     * @param array $configs
+     */
+    public function __construct(array $configs)
+    {
+        parent::__construct();
+
+        foreach ($configs as $name => $value) {
+            $this->set($name, $value);
+        }
+    }
 }

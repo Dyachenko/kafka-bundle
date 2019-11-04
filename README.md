@@ -98,14 +98,14 @@ sb_kafka:
             group.id: 'main_group'
             log.connection.close: 'false'
             metadata.broker.list: '%env(KAFKA_BROKERS)%'
-            queue.buffering.max.messages: 10000000
+            queue.buffering.max.messages: 100000
 
     consumers:
         configuration:
             group.id: 'main_group'
+            auto.offset.reset: 'smallest'
             log.connection.close: 'false'
             metadata.broker.list: '%env(KAFKA_BROKERS)%'
-            auto.offset.reset: 'smallest'
 ```
 
 Read more about supported configuration properties: [librdkafka configuration][librdkafka-configuration-link].

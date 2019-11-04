@@ -32,9 +32,7 @@ class DemoConsumerTest extends ConsoleTestCase
 
     public function testProduceConsume(): void
     {
-        $this->container->get(Producer::class)->send(DemoConsumer::QUEUE_NAME, [
-            DemoConsumer::STOP_MESSAGE,
-        ]);
+        $this->container->get(Producer::class)->send(DemoConsumer::QUEUE_NAME, [DemoConsumer::STOP_MESSAGE]);
 
         $this->executeCommand(10000);
 

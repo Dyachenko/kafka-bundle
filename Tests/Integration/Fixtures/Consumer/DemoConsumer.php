@@ -22,7 +22,7 @@ class DemoConsumer extends Consumer
 
     protected function handle(Message $message): void
     {
-        if (\strpos($message->payload, static::STOP_MESSAGE)) {
+        if (false !== \strpos($message->payload, static::STOP_MESSAGE)) {
             $this->onStop();
         }
 
@@ -32,21 +32,6 @@ class DemoConsumer extends Consumer
     protected function onMessage(array $data): void
     {
         static::$messages[] = $data;
-    }
-
-    protected function onTimeout(Message $message): void
-    {
-        parent::onTimeout($message);
-    }
-
-    protected function onEnd(Message $message): void
-    {
-        parent::onEnd($message);
-    }
-
-    protected function onError(Message $message): void
-    {
-        parent::onError($message);
     }
 
     public function getLoggerMessages(): array
