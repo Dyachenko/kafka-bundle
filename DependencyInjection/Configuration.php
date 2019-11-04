@@ -16,7 +16,6 @@ class Configuration implements ConfigurationInterface
         $builder = new TreeBuilder(KafkaExtension::EXTENSION_ALIAS);
         $rootNode = $builder->getRootNode();
 
-        $this->addConfigurationSection('topics', $rootNode);
         $this->addConfigurationSection('consumers', $rootNode);
         $this->addConfigurationSection('producers', $rootNode);
 

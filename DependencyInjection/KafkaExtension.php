@@ -27,7 +27,6 @@ class KafkaExtension extends ConfigurableExtension
      */
     protected function loadInternal(array $configs, ContainerBuilder $container)
     {
-        $this->addTopicsConfiguration(Topic\Configuration::class, $configs['topics']['configuration'], $container);
         $this->addConfiguration(Consumer\Configuration::class, $configs['consumers']['configuration'], $container);
         $this->addConfiguration(Producer\Configuration::class, $configs['producers']['configuration'], $container);
 
@@ -40,21 +39,9 @@ class KafkaExtension extends ConfigurableExtension
      * @param array            $configs
      * @param ContainerBuilder $container
      */
-    private function addTopicsConfiguration(string $className, array $configs, ContainerBuilder $container): void
-    {
-        $container->setDefinition(new Reference($className), new Definition($className, [$configs]));
-    }
-
-    /**
-     * @param string           $className
-     * @param array            $configs
-     * @param ContainerBuilder $container
-     */
     private function addConfiguration(string $className, array $configs, ContainerBuilder $container): void
     {
-        $arguments = [$configs, new Reference(Topic\Configuration::class)];
-
-        $container->setDefinition(new Reference($className), new Definition($className, $arguments));
+        $container->setDefinition(new Reference($className), new Definition($className, [$configs]));
     }
 
     /**

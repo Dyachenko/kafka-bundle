@@ -105,10 +105,7 @@ sb_kafka:
             group.id: 'main_group'
             log.connection.close: 'false'
             metadata.broker.list: '%env(KAFKA_BROKERS)%'
-
-    topics:
-        configuration:
-            auto.offset.reset: smallest
+            auto.offset.reset: 'smallest'
 ```
 
 Read more about supported configuration properties: [librdkafka configuration][librdkafka-configuration-link].

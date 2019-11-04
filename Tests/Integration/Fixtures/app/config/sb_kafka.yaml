@@ -11,7 +11,4 @@ sb_kafka:
             group.id: 'main_group'
             log.connection.close: 'false'
             metadata.broker.list: 'kafka.intra:9092'
-
-    topics:
-        configuration:
-            auto.offset.reset: smallest
+            auto.offset.reset: 'smallest'

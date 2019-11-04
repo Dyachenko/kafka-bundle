@@ -30,21 +30,6 @@ class DemoConsumerTest extends ConsoleTestCase
         $this->assertSame($this->getExpectedLoggerMessages(), $this->getDemoConsumer()->getLoggerMessages());
     }
 
-    public function testConsumerStop(): void
-    {
-        $consumer = $this->createConfiguredMock(Consumer::class, []);
-
-        foreach ($this->getMessages() as $index => $message) {
-            $consumer->expects($this->at($index))->method('consume')->willReturn($message);
-        }
-
-        $this->container->set(Consumer::class, $consumer);
-
-        $this->executeCommand();
-
-        $this->assertSame($this->getExpectedLoggerMessages(), $this->getDemoConsumer()->getLoggerMessages());
-    }
-
     public function testProduceConsume(): void
     {
         $this->container->get(Producer::class)->send(DemoConsumer::QUEUE_NAME, [
