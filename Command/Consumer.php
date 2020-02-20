@@ -1,7 +1,5 @@
 <?php
 
-declare(ticks=1);
-
 namespace SymfonyBundles\KafkaBundle\Command;
 
 use Exception;
@@ -50,6 +48,7 @@ abstract class Consumer extends Console\Command\Command
      */
     final public function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
+        \pcntl_async_signals(true);
         \pcntl_signal(\SIGTERM, [$this, 'onStop']);
 
         $this->onInitialize();
