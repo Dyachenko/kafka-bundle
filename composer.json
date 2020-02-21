@@ -24,8 +24,8 @@
         "ext-json": "*",
         "ext-pcntl": "*",
         "ext-rdkafka": ">=4.0",
-        "symfony/framework-bundle": "^4.3",
-        "symfony/yaml": "^4.3"
+        "symfony/framework-bundle": "^4.3 | ^5.0",
+        "symfony/yaml": "^4.3 | ^5.0"
     },
     "require-dev": {
         "kwn/php-rdkafka-stubs": "^2.0",
